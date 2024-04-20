@@ -20,7 +20,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-
+import { Slider } from "@/components/ui/slider";
 const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
   const handleInput = (event) => {
     const { name, value } = event.target;
@@ -54,7 +54,7 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
               <CardDescription>Add meg a családtag nevét</CardDescription>
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label>Brutto bér</Label>
+              <Label>Bruttó bér</Label>
               <Input
                 name="ber"
                 id="ber"
@@ -63,14 +63,12 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
                 type="number"
               />
               <CardDescription>Add meg a bruttó béredet</CardDescription>
-              <input
-                type="range"
-                name="ber"
-                id="ber"
-                min="0"
-                max="1000000"
-                value={activeUser.ber}
-                onInput={handleInput}
+              <Slider
+                value={[activeUser.ber]}
+                max={10000000}
+                step={1}
+                min={0}
+                onValueChange={(value) => updateActiveUser("ber", value)}
               />
             </div>
             <div className="flex justify-center space-x-1.5">
@@ -123,8 +121,8 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-              <Badge variant ='green'>Jogosult</Badge>
-              <Badge variant='destructive'>Nem jogosult</Badge>
+              <Badge variant="green">Jogosult</Badge>
+              <Badge variant="destructive">Nem jogosult</Badge>
             </div>
             <div className="flex items-center space-x-2">
               <Switch />
