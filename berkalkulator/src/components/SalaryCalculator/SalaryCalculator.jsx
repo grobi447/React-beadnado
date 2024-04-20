@@ -23,16 +23,35 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
         <form>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Családtag neve</Label>
+              <Label>Családtag neve</Label>
               <Input
                 name="nev"
                 id="name"
                 value={activeUser.nev}
                 onInput={handleInput}
+                type="text"
               />
+              <CardDescription>Add meg a családtag nevét</CardDescription>
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="framework">Framework</Label>
+              <Label>Brutto bér</Label>
+              <Input
+                name="ber"
+                id="ber"
+                value={activeUser.ber}
+                onInput={handleInput}
+                type="number"
+              />
+              <CardDescription>Add meg a bruttó béredet</CardDescription>
+              <input
+                type="range"
+                name="ber"
+                id="ber"
+                min="0"
+                max="1000000"
+                value={activeUser.ber}
+                onInput={handleInput}
+              />
             </div>
           </div>
         </form>
