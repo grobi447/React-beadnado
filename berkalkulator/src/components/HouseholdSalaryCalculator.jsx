@@ -16,21 +16,24 @@ const HouseholdSalaryCalculator = () => {
     kedvezmenyezett: 0
   };
 
-
   const [users, setUsers] = useState([]);
 
   const addUser = () => {
     const newUser = { ...defaultState };
     setUsers(prevUsers => [...prevUsers, newUser]);
   };
-
+  const [activeUserIndex, setActiveUserIndex] = useState(-1);
+  const onUserSelect = (index) => {
+    setActiveUserIndex(index);
+  };
+  
   return (
     <>
       <header>
-        <FamilyMemberTabs onAddUser={addUser} users={users}/>
+        <FamilyMemberTabs onAddUser={addUser} users={users} onUserSelect={onUserSelect}/>
       </header>
       <main>
-        <SalaryCalculator />
+        {users[activeUserIndex] && <SalaryCalculator  avtiveUser={users[activeUserIndex]}/>}
         <HouseholdSummary />
       </main>
     </>
