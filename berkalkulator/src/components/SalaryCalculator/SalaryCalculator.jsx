@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Minus, Plus } from "lucide-react";
+import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -27,6 +28,8 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
     const { name, value } = event.target;
     updateActiveUser(name, value);
   };
+
+  const [isOpen, setIsOpen] = useState(false);
 
   function handlePercentageChange(percentage) {
     updateActiveUser(
@@ -109,9 +112,9 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
             <div className="flex items-center space-x-2">
               <Switch checked={activeUser.hazas} onCheckedChange={(isChecked) => updateActiveUser("hazas", isChecked)} />
               <Label>Friss Házasok kedvezménye</Label>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button>Dátum módosítása</Button>
+              <Dialog open={isOpen}>
+                <DialogTrigger onClick={() => setIsOpen(true)}>         
+                  <Badge>Dátum módosítása</Badge>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
                   <DialogHeader>
@@ -126,14 +129,15 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
                       Add meg a házasságkötés dátumát:
                     </Label>
                     <Input
-                      id="name"
+                      id="date"
                       defaultValue="YYYY/MM/DD"
+                      onChange={(e) => updateActiveUser("date", e.target.value)}
                       className="col-span-3"
                     />
                     <DialogDescription>Például: 2000/10/25</DialogDescription>
                   </div>
                   <DialogFooter>
-                    <Button type="submit">Mentés</Button>
+                    <Button type="submit" onClick={() => setIsOpen(false)}>Mentés</Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
