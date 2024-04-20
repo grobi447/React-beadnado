@@ -14,6 +14,14 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
     const { name, value } = event.target;
     updateActiveUser(name, value);
   };
+
+  function handlePercentageChange(percentage) {
+    updateActiveUser(
+      "ber",
+      Math.round(activeUser.ber * (1 + percentage / 100))
+    );
+  }
+
   return (
     <Card className="w-[350px]">
       <CardHeader>
@@ -52,6 +60,20 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
                 value={activeUser.ber}
                 onInput={handleInput}
               />
+            </div>
+            <div className="flex justify-center space-x-1.5">
+              <Button type="button" onClick={() => handlePercentageChange(-1)}>
+                -1%
+              </Button>
+              <Button type="button" onClick={() => handlePercentageChange(-5)}>
+                -5%
+              </Button>
+              <Button type="button" onClick={() => handlePercentageChange(1)}>
+                +1%
+              </Button>
+              <Button type="button" onClick={() => handlePercentageChange(5)}>
+                +5%
+              </Button>
             </div>
           </div>
         </form>
