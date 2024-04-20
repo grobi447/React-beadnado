@@ -13,27 +13,48 @@ const HouseholdSalaryCalculator = () => {
     adokedvezmeny: false,
     csaladikedvezmeny: false,
     eltartott: 0,
-    kedvezmenyezett: 0
+    kedvezmenyezett: 0,
   };
 
   const [users, setUsers] = useState([]);
+  const [activeUserIndex, setActiveUserIndex] = useState(-1);
 
   const addUser = () => {
     const newUser = { ...defaultState };
-    setUsers(prevUsers => [...prevUsers, newUser]);
+    setUsers((prevUsers) => [...prevUsers, newUser]);
   };
-  const [activeUserIndex, setActiveUserIndex] = useState(-1);
+
   const onUserSelect = (index) => {
     setActiveUserIndex(index);
   };
-  
+
+  const updateActiveUser = (field, value) => {
+    setUsers((prevUsers) => {
+      const updatedUsers = [...prevUsers];
+      updatedUsers[activeUserIndex] = {
+        ...updatedUsers[activeUserIndex],
+        [field]: value,
+      };
+      return updatedUsers;
+    });
+  };
+
   return (
     <>
       <header>
-        <FamilyMemberTabs onAddUser={addUser} users={users} onUserSelect={onUserSelect}/>
+        <FamilyMemberTabs
+          onAddUser={addUser}
+          users={users}
+          onUserSelect={onUserSelect}
+        />
       </header>
       <main>
-        {users[activeUserIndex] && <SalaryCalculator  avtiveUser={users[activeUserIndex]}/>}
+        {users[activeUserIndex] && (
+          <SalaryCalculator
+            activeUser={users[activeUserIndex]}
+            updateActiveUser={updateActiveUser}
+          />
+        )}
         <HouseholdSummary />
       </main>
     </>
