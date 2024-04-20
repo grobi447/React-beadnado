@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Minus, Plus } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -33,7 +34,21 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
       Math.round(activeUser.ber * (1 + percentage / 100))
     );
   }
+  const incrementEltartott = () => {
+    updateActiveUser("eltartott", activeUser.eltartott + 1);
+  };
 
+  const decrementEltartott = () => {
+    updateActiveUser("eltartott", activeUser.eltartott - 1);
+  };
+
+  const incrementKedvezmenyezett = () => {
+    updateActiveUser("kedvezmenyezett", activeUser.kedvezmenyezett + 1);
+  };
+
+  const decrementKedvezmenyezett = () => {
+    updateActiveUser("kedvezmenyezett", activeUser.kedvezmenyezett - 1);
+  };
   return (
     <Card className="w-[650px]">
       <CardHeader>
@@ -106,7 +121,7 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
                     </DialogDescription>
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
-                    <Label htmlFor="name" className="text-left">
+                    <Label className="text-left">
                       Add meg a házasságkötés dátumát:
                     </Label>
                     <Input
@@ -132,12 +147,21 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
               <Switch />
               <Label>Családi kedvezmény</Label>
             </div>
+            <div className="flex items-center">
+              <Minus onClick={decrementEltartott} />
+              {activeUser.eltartott}
+              <Plus onClick={incrementEltartott} />
+              <Label>Eltartott, ebből kedvezményezett</Label>
+              <Minus onClick={decrementKedvezmenyezett} />
+              {activeUser.kedvezmenyezett}
+              <Plus onClick={incrementKedvezmenyezett} />
+            </div>
           </div>
         </form>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline">Cancel</Button>
-        <Button>Deploy</Button>
+      <CardFooter className="flex flex-col justify-center">
+        <h1>Számított nettó bér</h1>
+        <Button>{activeUser.ber} Ft</Button>
       </CardFooter>
     </Card>
   );
