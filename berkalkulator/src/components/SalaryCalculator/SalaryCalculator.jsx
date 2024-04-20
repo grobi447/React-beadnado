@@ -1,6 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   Card,
   CardContent,
   CardDescription,
@@ -9,6 +18,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+
 const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
   const handleInput = (event) => {
     const { name, value } = event.target;
@@ -23,7 +35,7 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
   }
 
   return (
-    <Card className="w-[350px]">
+    <Card className="w-[650px]">
       <CardHeader>
         <CardTitle>{activeUser.nev} bérének kiszámítása</CardTitle>
       </CardHeader>
@@ -74,6 +86,53 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
               <Button type="button" onClick={() => handlePercentageChange(5)}>
                 +5%
               </Button>
+            </div>
+            <Label>Kedvezmények</Label>
+            <div className="flex items-center space-x-2">
+              <Switch />
+              <Label>25 év alattiak SZJA mentessége</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Switch />
+              <Label>Friss Házasok kedvezménye</Label>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button>Dátum módosítása</Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogDescription>
+                      A kedvezmény először a házasságkötést követő hónapra
+                      vehető igénybe és a házassági életközösség alatt
+                      legfeljebb 24 hónapon kersztül jár.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-4 py-4">
+                    <Label htmlFor="name" className="text-left">
+                      Add meg a házasságkötés dátumát:
+                    </Label>
+                    <Input
+                      id="name"
+                      defaultValue="YYYY/MM/DD"
+                      className="col-span-3"
+                    />
+                    <DialogDescription>Például: 2000/10/25</DialogDescription>
+                  </div>
+                  <DialogFooter>
+                    <Button type="submit">Mentés</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+              <Badge variant ='green'>Jogosult</Badge>
+              <Badge variant='destructive'>Nem jogosult</Badge>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Switch />
+              <Label>Személyi adókedvezmény</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Switch />
+              <Label>Családi kedvezmény</Label>
             </div>
           </div>
         </form>
