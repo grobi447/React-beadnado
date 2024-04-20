@@ -6,7 +6,7 @@ import { useState } from "react";
 const HouseholdSalaryCalculator = () => {
   const defaultState = {
     nev: "Név",
-    ber: 0,
+    brutto: 0,
     szja: false,
     hazas: false,
     datum: "",
@@ -14,6 +14,7 @@ const HouseholdSalaryCalculator = () => {
     csaladikedvezmeny: false,
     eltartott: 0,
     kedvezmenyezett: 0,
+    netto: 0,
   };
 
   const [users, setUsers] = useState([]);
@@ -35,7 +36,7 @@ const HouseholdSalaryCalculator = () => {
         ...updatedUsers[activeUserIndex],
         [field]: value,
       };
-
+      console.log(updatedUsers);
       return updatedUsers;
     });
   };

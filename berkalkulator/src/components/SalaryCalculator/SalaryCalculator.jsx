@@ -30,8 +30,8 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
 
   function handlePercentageChange(percentage) {
     updateActiveUser(
-      "ber",
-      Math.round(activeUser.ber * (1 + percentage / 100))
+      "brutto",
+      Math.round(activeUser.brutto * (1 + percentage / 100))
     );
   }
   const incrementEltartott = () => {
@@ -49,6 +49,7 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
   const decrementKedvezmenyezett = () => {
     updateActiveUser("kedvezmenyezett", activeUser.kedvezmenyezett - 1);
   };
+
   return (
     <Card className="w-[650px]">
       <CardHeader>
@@ -71,19 +72,19 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
             <div className="flex flex-col space-y-1.5">
               <Label>Bruttó bér</Label>
               <Input
-                name="ber"
-                id="ber"
-                value={activeUser.ber}
+                name="brutto"
+                id="brutto"
+                value={activeUser.brutto}
                 onInput={handleInput}
-                type="number"
+                type="numbrutto"
               />
               <CardDescription>Add meg a bruttó béredet</CardDescription>
               <Slider
-                value={[activeUser.ber]}
+                value={[activeUser.brutto]}
                 max={10000000}
                 step={1}
                 min={0}
-                onValueChange={(value) => updateActiveUser("ber", value)}
+                onValueChange={(value) => updateActiveUser("brutto", value)}
               />
             </div>
             <div className="flex justify-center space-x-1.5">
@@ -102,11 +103,11 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
             </div>
             <Label>Kedvezmények</Label>
             <div className="flex items-center space-x-2">
-              <Switch />
+              <Switch checked={activeUser.szja} onCheckedChange={(isChecked) => updateActiveUser("szja", isChecked)} />
               <Label>25 év alattiak SZJA mentessége</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <Switch />
+              <Switch checked={activeUser.hazas} onCheckedChange={(isChecked) => updateActiveUser("hazas", isChecked)} />
               <Label>Friss Házasok kedvezménye</Label>
               <Dialog>
                 <DialogTrigger asChild>
@@ -140,11 +141,11 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
               <Badge variant="destructive">Nem jogosult</Badge>
             </div>
             <div className="flex items-center space-x-2">
-              <Switch />
+              <Switch checked={activeUser.adokedvezmeny} onCheckedChange={(isChecked) => updateActiveUser("adokedvezmeny", isChecked)}/>
               <Label>Személyi adókedvezmény</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <Switch />
+              <Switch checked={activeUser.csaladikedvezmeny} onCheckedChange={(isChecked) => updateActiveUser("csaladikedvezmeny", isChecked)}/>
               <Label>Családi kedvezmény</Label>
             </div>
             <div className="flex items-center">
@@ -161,7 +162,7 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
       </CardContent>
       <CardFooter className="flex flex-col justify-center">
         <h1>Számított nettó bér</h1>
-        <Button>{activeUser.ber} Ft</Button>
+        <Button>{activeUser.netto} Ft</Button>
       </CardFooter>
     </Card>
   );
