@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Minus, Plus } from "lucide-react";
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -30,7 +30,7 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
   };
 
   const [isOpen, setIsOpen] = useState(false);
-
+  const currentDate = new Date();
   function handlePercentageChange(percentage) {
     updateActiveUser(
       "brutto",
@@ -52,7 +52,20 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
   const decrementKedvezmenyezett = () => {
     updateActiveUser("kedvezmenyezett", activeUser.kedvezmenyezett - 1);
   };
-
+  const handleDateChange = (event) => {
+    const currentDate = new Date();
+    const marriageDate = new Date(event.target.value);
+  
+    const monthsDifference = currentDate.getMonth() - marriageDate.getMonth() 
+      + (12 * (currentDate.getFullYear() - marriageDate.getFullYear()));
+  
+    if (monthsDifference >= 1 && monthsDifference <= 24) {
+      updateActiveUser('jogosult', true);
+    }
+    else{
+      updateActiveUser('jogosult', false);
+    }
+  };
   return (
     <Card className="w-[650px]">
       <CardHeader>
@@ -84,7 +97,7 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
               <CardDescription>Add meg a bruttó béredet</CardDescription>
               <Slider
                 value={[activeUser.brutto]}
-                max={10000000}
+                max={1000000}
                 step={1}
                 min={0}
                 onValueChange={(value) => updateActiveUser("brutto", value)}
@@ -106,14 +119,24 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
             </div>
             <Label>Kedvezmények</Label>
             <div className="flex items-center space-x-2">
-              <Switch checked={activeUser.szja} onCheckedChange={(isChecked) => updateActiveUser("szja", isChecked)} />
+              <Switch
+                checked={activeUser.szja}
+                onCheckedChange={(isChecked) =>
+                  updateActiveUser("szja", isChecked)
+                }
+              />
               <Label>25 év alattiak SZJA mentessége</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <Switch checked={activeUser.hazas} onCheckedChange={(isChecked) => updateActiveUser("hazas", isChecked)} />
+              <Switch
+                checked={activeUser.hazas}
+                onCheckedChange={(isChecked) =>
+                  updateActiveUser("hazas", isChecked)
+                }
+              />
               <Label>Friss Házasok kedvezménye</Label>
               <Dialog open={isOpen}>
-                <DialogTrigger onClick={() => setIsOpen(true)}>         
+                <DialogTrigger onClick={() => setIsOpen(true)}>
                   <Badge>Dátum módosítása</Badge>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
@@ -131,36 +154,49 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
                     <Input
                       id="date"
                       defaultValue="YYYY/MM/DD"
-                      onChange={(e) => updateActiveUser("date", e.target.value)}
+                      onChange={handleDateChange}
                       className="col-span-3"
                     />
                     <DialogDescription>Például: 2000/10/25</DialogDescription>
                   </div>
                   <DialogFooter>
-                    <Button type="submit" onClick={() => setIsOpen(false)}>Mentés</Button>
+                    <Button type="submit" onClick={() => setIsOpen(false)}>
+                      Mentés
+                    </Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-              <Badge variant="green">Jogosult</Badge>
-              <Badge variant="destructive">Nem jogosult</Badge>
+              {activeUser.hazas && (activeUser.jogosult ? <Badge variant="green">Jogosult</Badge> : <Badge variant="destructive">Nem jogosult</Badge>)}
             </div>
             <div className="flex items-center space-x-2">
-              <Switch checked={activeUser.adokedvezmeny} onCheckedChange={(isChecked) => updateActiveUser("adokedvezmeny", isChecked)}/>
+              <Switch
+                checked={activeUser.adokedvezmeny}
+                onCheckedChange={(isChecked) =>
+                  updateActiveUser("adokedvezmeny", isChecked)
+                }
+              />
               <Label>Személyi adókedvezmény</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <Switch checked={activeUser.csaladikedvezmeny} onCheckedChange={(isChecked) => updateActiveUser("csaladikedvezmeny", isChecked)}/>
+              <Switch
+                checked={activeUser.csaladikedvezmeny}
+                onCheckedChange={(isChecked) =>
+                  updateActiveUser("csaladikedvezmeny", isChecked)
+                }
+              />
               <Label>Családi kedvezmény</Label>
             </div>
-            <div className="flex items-center">
-              <Minus onClick={decrementEltartott} />
-              {activeUser.eltartott}
-              <Plus onClick={incrementEltartott} />
-              <Label>Eltartott, ebből kedvezményezett</Label>
-              <Minus onClick={decrementKedvezmenyezett} />
-              {activeUser.kedvezmenyezett}
-              <Plus onClick={incrementKedvezmenyezett} />
-            </div>
+            {activeUser.csaladikedvezmeny && (
+              <div className="flex items-center">
+                <Minus onClick={decrementEltartott} />
+                {activeUser.eltartott}
+                <Plus onClick={incrementEltartott} />
+                <Label>Eltartott, ebből kedvezményezett</Label>
+                <Minus onClick={decrementKedvezmenyezett} />
+                {activeUser.kedvezmenyezett}
+                <Plus onClick={incrementKedvezmenyezett} />
+              </div>
+            )}
           </div>
         </form>
       </CardContent>

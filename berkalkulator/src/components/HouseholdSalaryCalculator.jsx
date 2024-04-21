@@ -9,6 +9,7 @@ const HouseholdSalaryCalculator = () => {
     brutto: 0,
     szja: false,
     hazas: false,
+    jogosult: false,
     datum: "",
     adokedvezmeny: false,
     csaladikedvezmeny: false,
