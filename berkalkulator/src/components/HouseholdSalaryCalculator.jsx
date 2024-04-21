@@ -84,7 +84,7 @@ const calculateNetIncome = (user) => {
   return Math.round(netIncome);
 };
   return (
-    <>
+    <div className="p-10">
       <header>
         <FamilyMemberTabs
           onAddUser={addUser}
@@ -92,16 +92,16 @@ const calculateNetIncome = (user) => {
           onUserSelect={onUserSelect}
         />
       </header>
-      <main>
+      <main className = 'flex space-x-10'>
         {users[activeUserIndex] && (
           <SalaryCalculator
             activeUser={users[activeUserIndex]}
             updateActiveUser={updateActiveUser}
           />
         )}
-        <HouseholdSummary />
+        <HouseholdSummary users={users} activeUserIndex={activeUserIndex}/>
       </main>
-    </>
+    </div>
   );
 };
 

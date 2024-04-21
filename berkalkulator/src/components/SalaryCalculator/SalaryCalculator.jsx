@@ -70,7 +70,7 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
     }
   };
   return (
-    <Card className="w-[650px]">
+    <Card className="w-[650px] bg-[#e2e8f0]">
       <CardHeader>
         <CardTitle>{activeUser.nev} bérének kiszámítása</CardTitle>
       </CardHeader>
