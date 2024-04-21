@@ -37,11 +37,52 @@ const HouseholdSalaryCalculator = () => {
         ...updatedUsers[activeUserIndex],
         [field]: value,
       };
+
+      const netIncome = calculateNetIncome(updatedUsers[activeUserIndex]);
+      updatedUsers[activeUserIndex] = {
+        ...updatedUsers[activeUserIndex],
+        netto: netIncome,
+      };
+
       console.log(updatedUsers);
       return updatedUsers;
     });
   };
 
+const calculateNetIncome = (user) => {
+  let személyiTax = 0;
+  let tbTax = user.brutto * 0.185;
+
+  if (user.szja && user.brutto > 499952) {
+    const taxableIncome = user.brutto - 499952;
+    személyiTax = taxableIncome * 0.15;
+  } else if (!user.szja) {
+    személyiTax = user.brutto * 0.15;
+  }
+
+  if (user.adokedvezmeny) {
+    személyiTax = Math.max(0, személyiTax - 77300);
+  }
+
+  let netIncome = user.brutto - személyiTax - tbTax;
+
+  if(user.hazas && user.jogosult) {
+    netIncome += 5000;
+  }
+  if(user.csaladikedvezmeny) {
+    let kedvezmeny = 0;
+    if(user.kedvezmenyezett === 1) {
+      kedvezmeny = 10000 * user.eltartott;
+    } else if(user.kedvezmenyezett === 2) {
+      kedvezmeny = 20000 * user.eltartott;
+    } else if(user.kedvezmenyezett >= 3) {
+      kedvezmeny = 33000 * user.eltartott;
+    }
+    netIncome += kedvezmeny;
+  }
+
+  return Math.round(netIncome);
+};
   return (
     <>
       <header>
