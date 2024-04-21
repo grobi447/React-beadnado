@@ -42,14 +42,17 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
   };
 
   const decrementEltartott = () => {
+    if (activeUser.eltartott === 0) return;
     updateActiveUser("eltartott", activeUser.eltartott - 1);
   };
 
   const incrementKedvezmenyezett = () => {
+    if (activeUser.kedvezmenyezett === activeUser.eltartott) return;
     updateActiveUser("kedvezmenyezett", activeUser.kedvezmenyezett + 1);
   };
 
   const decrementKedvezmenyezett = () => {
+    if (activeUser.kedvezmenyezett === 0) return;
     updateActiveUser("kedvezmenyezett", activeUser.kedvezmenyezett - 1);
   };
   const handleDateChange = (event) => {
