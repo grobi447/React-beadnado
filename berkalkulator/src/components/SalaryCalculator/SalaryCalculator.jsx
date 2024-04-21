@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Minus, Plus } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import {
   Dialog,
@@ -23,7 +24,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
-const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
+const SalaryCalculator = ({ activeUser, updateActiveUser, deleteUser }) => {
   const handleInput = (event) => {
     const { name, value } = event.target;
     updateActiveUser(name, value);
@@ -58,21 +59,27 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
   const handleDateChange = (event) => {
     const currentDate = new Date();
     const marriageDate = new Date(event.target.value);
-  
-    const monthsDifference = currentDate.getMonth() - marriageDate.getMonth() 
-      + (12 * (currentDate.getFullYear() - marriageDate.getFullYear()));
-  
+
+    const monthsDifference =
+      currentDate.getMonth() -
+      marriageDate.getMonth() +
+      12 * (currentDate.getFullYear() - marriageDate.getFullYear());
+
     if (monthsDifference >= 1 && monthsDifference <= 24) {
-      updateActiveUser('jogosult', true);
-    }
-    else{
-      updateActiveUser('jogosult', false);
+      updateActiveUser("jogosult", true);
+    } else {
+      updateActiveUser("jogosult", false);
     }
   };
   return (
     <Card className="w-[650px] bg-[#e2e8f0]">
       <CardHeader>
-        <CardTitle>{activeUser.nev} bérének kiszámítása</CardTitle>
+        <div className="flex justify-between items-center">
+          <CardTitle>{activeUser.nev} bérének kiszámítása</CardTitle>
+          <Button variant="outline" className="text-xs" onClick={deleteUser}>
+            <Trash2 />
+          </Button>
+        </div>
       </CardHeader>
       <CardContent>
         <form>
@@ -169,7 +176,12 @@ const SalaryCalculator = ({ activeUser, updateActiveUser }) => {
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-              {activeUser.hazas && (activeUser.jogosult ? <Badge variant="green">Jogosult</Badge> : <Badge variant="destructive">Nem jogosult</Badge>)}
+              {activeUser.hazas &&
+                (activeUser.jogosult ? (
+                  <Badge variant="green">Jogosult</Badge>
+                ) : (
+                  <Badge variant="destructive">Nem jogosult</Badge>
+                ))}
             </div>
             <div className="flex items-center space-x-2">
               <Switch

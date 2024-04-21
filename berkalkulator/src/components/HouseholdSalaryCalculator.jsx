@@ -48,41 +48,56 @@ const HouseholdSalaryCalculator = () => {
       return updatedUsers;
     });
   };
+const deleteUser = () => {
+  setUsers((prevUsers) => {
+    const newUsers = prevUsers.filter((user, index) => index !== activeUserIndex);
+    let newActiveUserIndex = activeUserIndex;
 
-const calculateNetIncome = (user) => {
-  let személyiTax = 0;
-  let tbTax = user.brutto * 0.185;
-
-  if (user.szja && user.brutto > 499952) {
-    const taxableIncome = user.brutto - 499952;
-    személyiTax = taxableIncome * 0.15;
-  } else if (!user.szja) {
-    személyiTax = user.brutto * 0.15;
-  }
-
-  if (user.adokedvezmeny) {
-    személyiTax = Math.max(0, személyiTax - 77300);
-  }
-
-  let netIncome = user.brutto - személyiTax - tbTax;
-
-  if(user.hazas && user.jogosult) {
-    netIncome += 5000;
-  }
-  if(user.csaladikedvezmeny) {
-    let kedvezmeny = 0;
-    if(user.kedvezmenyezett === 1) {
-      kedvezmeny = 10000 * user.eltartott;
-    } else if(user.kedvezmenyezett === 2) {
-      kedvezmeny = 20000 * user.eltartott;
-    } else if(user.kedvezmenyezett >= 3) {
-      kedvezmeny = 33000 * user.eltartott;
+    if (activeUserIndex < newUsers.length) {
+      newActiveUserIndex = activeUserIndex;
+    } else if (newUsers.length > 0) {
+      newActiveUserIndex = newUsers.length - 1;
+    } else {
+      newActiveUserIndex = -1;
     }
-    netIncome += kedvezmeny;
-  }
-
-  return Math.round(netIncome);
+    setActiveUserIndex(newActiveUserIndex);
+    return newUsers;
+  });
 };
+  const calculateNetIncome = (user) => {
+    let személyiTax = 0;
+    let tbTax = user.brutto * 0.185;
+
+    if (user.szja && user.brutto > 499952) {
+      const taxableIncome = user.brutto - 499952;
+      személyiTax = taxableIncome * 0.15;
+    } else if (!user.szja) {
+      személyiTax = user.brutto * 0.15;
+    }
+
+    if (user.adokedvezmeny) {
+      személyiTax = Math.max(0, személyiTax - 77300);
+    }
+
+    let netIncome = user.brutto - személyiTax - tbTax;
+
+    if (user.hazas && user.jogosult) {
+      netIncome += 5000;
+    }
+    if (user.csaladikedvezmeny) {
+      let kedvezmeny = 0;
+      if (user.kedvezmenyezett === 1) {
+        kedvezmeny = 10000 * user.eltartott;
+      } else if (user.kedvezmenyezett === 2) {
+        kedvezmeny = 20000 * user.eltartott;
+      } else if (user.kedvezmenyezett >= 3) {
+        kedvezmeny = 33000 * user.eltartott;
+      }
+      netIncome += kedvezmeny;
+    }
+
+    return Math.round(netIncome);
+  };
   return (
     <div className="p-10">
       <header>
@@ -92,14 +107,15 @@ const calculateNetIncome = (user) => {
           onUserSelect={onUserSelect}
         />
       </header>
-      <main className = 'flex space-x-10'>
+      <main className="flex space-x-10">
         {users[activeUserIndex] && (
           <SalaryCalculator
             activeUser={users[activeUserIndex]}
             updateActiveUser={updateActiveUser}
+            deleteUser={deleteUser}
           />
         )}
-        <HouseholdSummary users={users} activeUserIndex={activeUserIndex}/>
+        <HouseholdSummary users={users} activeUserIndex={activeUserIndex} />
       </main>
     </div>
   );
